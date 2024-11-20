@@ -1,6 +1,6 @@
 import socket
 
-def start_server():
+def start_tcp_server():
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server_socket.bind(('localhost', 12345))
     server_socket.listen(1)
@@ -19,4 +19,4 @@ def start_server():
     conn.close()
 
 if __name__ == '__main__':
-    start_server()
+    start_tcp_server()
