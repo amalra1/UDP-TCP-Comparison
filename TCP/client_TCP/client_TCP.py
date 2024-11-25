@@ -28,5 +28,5 @@ def receive_file_from_server(filename):
 if __name__ == '__main__':
     
     # Caminho onde o arquivo será salvo
-    filename = 'TCP/arquivos_destino/video_arvore.mp4'
+    filename = 'TCP/arquivos_destino/download.rar'
     receive_file_from_server(filename)

@@ -1,8 +1,14 @@
 import socket
+import os
+import time  # Importa o módulo time para contar o tempo
 
 def send_file_to_client(filename):
-    HOST = "127.0.0.1"  
-    PORT = 65433       
+    HOST = "127.0.0.1"  # Endereço padrão de loopback (localhost)
+    PORT = 65433        # Porta para escutar (portas não privilegiadas são > 1023)
+    
+    # Obtém o tamanho do arquivo e calcula o número de pacotes
+    file_size = os.path.getsize(filename)  
+    num_packets = (file_size // 1024) + 1  
 
     # Cria socket
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
@@ -19,15 +25,26 @@ def send_file_to_client(filename):
         
         with conn:  
             print(f"Conectado por {addr}")
+            
+            sent_packets = 0  # Contador de pacotes enviados
+            
+            # Inicia a contagem do tempo
+            start_time = time.time()
+            
+            # Lê o arquivo em pedaços de 1024 bytes
             with open(filename, 'rb') as file:
-                
-                # Lê o arquivo em pedaços de 1024 bytes
                 while chunk := file.read(1024):  
                     
                     # Envia cada pedaço do arquivo para o cliente
-                    conn.sendall(chunk)  
+                    conn.sendall(chunk)
+                    sent_packets += 1
+                    print(f"Progresso: {sent_packets}/{num_packets} pacotes enviados")  
                     
             print(f"Arquivo {filename} enviado com sucesso.")
+           
+            # Calcula o tempo total de transferência
+            end_time = time.time()
+            total_time = end_time - start_time
            
         # Fecha a conexão com o cliente    
         conn.close()  
@@ -35,10 +52,17 @@ def send_file_to_client(filename):
         # Fecha o socket do servidor
         s.close()     
         print("Encerrando servidor...")
+        
+        # Chama a função para imprimir o resumo
+        imprimir_resumo(file_size, total_time)
+
+def imprimir_resumo(tamanho_total, tempo_total):
+    print(f"\nTamanho total transferido: {tamanho_total} bytes")
+    print(f"Tempo total de transferência: {tempo_total:.5f} segundos")
 
 if __name__ == '__main__':
     
     # Caminho do arquivo a ser enviado
-    filename = 'TCP/arquivos_origem/video_arvore.mp4'  
+    filename = 'TCP/arquivos_origem/FLS.rar'  
     
-    send_file_to_client(filename)  
+    send_file_to_client(filename)
