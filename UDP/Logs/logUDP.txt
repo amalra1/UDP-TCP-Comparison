@@ -1,0 +1,12 @@
+Iniciando recebimento do arquivo...
+Arquivo UDP/arquivos_destino/download.rar recebido com sucesso.
+
+---------------------------------------------------
+Diferença detectada entre os arquivos de origem e destino.
+Tempo da transferência:      1.53920 segundos
+Tamanho original do arquivo: 1051386760 bytes
+Total de bytes recebidos:    783845256
+Pacotes necessários:         1026745
+Total de pacotes recebidos:  765474
+---------------------------------------------------
+
