@@ -1,6 +1,5 @@
 import socket
 import os
-import time  # Importa o módulo time para contar o tempo
 
 def send_file_to_client(filename):
     HOST = "127.0.0.1"  # Endereço padrão de loopback (localhost)
@@ -28,9 +27,6 @@ def send_file_to_client(filename):
             
             sent_packets = 0  # Contador de pacotes enviados
             
-            # Inicia a contagem do tempo
-            start_time = time.time()
-            
             # Lê o arquivo em pedaços de 1024 bytes
             with open(filename, 'rb') as file:
                 while chunk := file.read(1024):  
@@ -38,13 +34,8 @@ def send_file_to_client(filename):
                     # Envia cada pedaço do arquivo para o cliente
                     conn.sendall(chunk)
                     sent_packets += 1
-                    print(f"Progresso: {sent_packets}/{num_packets} pacotes enviados")  
-                    
+                
             print(f"Arquivo {filename} enviado com sucesso.")
-           
-            # Calcula o tempo total de transferência
-            end_time = time.time()
-            total_time = end_time - start_time
            
         # Fecha a conexão com o cliente    
         conn.close()  
@@ -54,11 +45,11 @@ def send_file_to_client(filename):
         print("Encerrando servidor...")
         
         # Chama a função para imprimir o resumo
-        imprimir_resumo(file_size, total_time)
+        imprimir_resumo(file_size, sent_packets)
 
-def imprimir_resumo(tamanho_total, tempo_total):
+def imprimir_resumo(tamanho_total, pacotes_enviados):
     print(f"\nTamanho total transferido: {tamanho_total} bytes")
-    print(f"Tempo total de transferência: {tempo_total:.5f} segundos")
+    print(f"Total de pacotes enviados: {pacotes_enviados}")
 
 if __name__ == '__main__':
     
